@@ -10,3 +10,9 @@
 - [ ] users table
 - [ ] todos table
 - [ ] defaut values procedure for new users
+
+
+### MainPage
+- [x] layout
+- [x] topleft content
+- [ ] todo box inclutions 
