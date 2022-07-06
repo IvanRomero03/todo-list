@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Button, Badge, VStack, Text, Heading } from "@chakra-ui/react";
 
-const TopLeft = ({}) => {
+const TopLeft = ({ idTodo }) => {
   return (
     <Box mt="2%" alignContent={"left"} maxW="90%">
       <VStack spacing="4" alignContent={"center"}>
         <Badge colorScheme="green">
-          <Text>{"Asd"}</Text>
+          <Text>{idTodo ?? "Asd"}</Text>
         </Badge>
         <Heading>To-Do</Heading>
         <Button variantColor="green">

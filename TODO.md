@@ -15,4 +15,5 @@
 ### MainPage
 - [x] layout
 - [x] topleft content
+- [x] How to use
 - [ ] todo box inclutions 
