@@ -1,21 +1,10 @@
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import Header from "../components/header";
-import {
-  Text,
-  Center,
-  Box,
-  VStack,
-  Divider,
-  Heading,
-  Container,
-  Button,
-} from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../components/ColorModeSwitcher";
-import { TopLeft } from "../components/TopLeft";
-import TodoBox from "../components/TodoBox";
-import React, { useState } from "react";
+import Header from "../components/header";
 import HowToUse from "../components/HowToUse";
+import TodoBox from "../components/TodoBox";
+import TopLeft from "../components/TopLeft";
+import React from "react";
 
 export default function Home() {
   return (
