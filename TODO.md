@@ -1,7 +1,8 @@
 
 ## Front 
 - [x] theme management
-- [ ] todo box
+- [x] todo box
+- [x] edit todo box
 - [ ] main page
 - [ ] signup and login page
 
@@ -11,9 +12,11 @@
 - [ ] todos table
 - [ ] defaut values procedure for new users
 
-
 ### MainPage
 - [x] layout
 - [x] topleft content
 - [x] How to use
 - [ ] todo box inclutions 
+- [ ] sorting and filtering todos
+
+### editTodoBox

@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import { Box, Button, Badge, VStack, Text, Heading } from "@chakra-ui/react";
+import { Box, Button, Badge, VStack, Text, Heading, HStack, Container } from "@chakra-ui/react";
 import { getTodo } from "../pages/api/getTodo";
 import { useQuery } from "react-query";
+import { Todo, defaultTodo } from "../types/todo";
+import { EditIcon } from "@chakra-ui/icons"
 
 type Props = {
   idTodo?: number;
@@ -9,9 +11,10 @@ type Props = {
 
 const TodoBox = ( {idTodo}: Props ) => {
   const { data, isLoading, isError } = useQuery(
-    "getTodo",
-    async () => await getTodo(idTodo ?? 5)
+    "todo",
+    async () => await getTodo(idTodo ?? 1)
   );
+  const { description,priority,priorityColor,status,title } = data ?? defaultTodo();
   return (
     <Box
       mt="2%"
@@ -20,18 +23,39 @@ const TodoBox = ( {idTodo}: Props ) => {
       borderWidth={"2px"}
       borderRadius="lg"
     >
-      <VStack spacing="4" alignContent={"center"} m="6">
-        <Badge colorScheme="green">
-          <Text>{idTodo ?? "asd"}</Text>
-          <Text>
-            {data?.title ?? "aaaasd"}
-            {data?.idTodo}
-          </Text>
-        </Badge>
-        <Heading>To-Do</Heading>
-        <Button variant={"outline"}>
-          <Text>Add</Text>
-        </Button>
+      <VStack spacing="4" alignContent={"left"} m="6">
+        <HStack spacing="4">
+          <Container alignContent={"center"}>
+            {/* Priority */}
+            <Badge colorScheme={priorityColor}>
+              <Box m="1.5" >
+              <Text>{priority}</Text>
+              </Box>
+            </Badge>
+          </Container>
+          <Container alignContent={"Right"}>
+            {/* Edit */}
+            <Button
+              colorScheme="blue" 
+              variant="outline"
+              size="sm"
+              onClick={() => {}}
+            >
+              <EditIcon />
+            </Button>
+          </Container>
+        </HStack>
+        {/* Title */}
+        <Heading as="h3" size="lg">{title}</Heading>
+        {/* Description */}
+        <Text>{description}</Text>
+        {/* Status */}
+        <Badge colorScheme="gray">
+          {status}
+        </Badge> 
+        {/* <Button variant={"outline"}>
+          <Text>Edit</Text>
+        </Button> */}
       </VStack>
     </Box>
   );

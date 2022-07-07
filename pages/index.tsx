@@ -13,8 +13,6 @@ export default function Home() {
       <TopLeft username={"Ivansin"} />
       <HowToUse />
       <VStack textAlign="center" minH="100%" mt="5%" spacing={8}>
-        <ColorModeSwitcher />
-        <Text>asd</Text>
         <TodoBox />
       </VStack>
     </>
