@@ -6,7 +6,7 @@ type Props = {
   username: string;
 };
 
-const TopLeft = ( {username} : Props ) => {
+const TopLeft = ({ username }: Props) => {
   return (
     <Container mt="2%" alignContent={"left"} maxW="90%">
       <HStack spacing="4" alignContent={"center"}>

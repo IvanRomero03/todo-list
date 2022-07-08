@@ -2,7 +2,7 @@
 ## Front 
 - [x] theme management
 - [x] todo box
-- [x] edit todo box
+- [ ] edit todo box
 - [ ] main page
 - [ ] signup and login page
 

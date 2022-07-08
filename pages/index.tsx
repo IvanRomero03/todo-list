@@ -5,6 +5,7 @@ import HowToUse from "../components/HowToUse";
 import TodoBox from "../components/TodoBox";
 import TopLeft from "../components/TopLeft";
 import React from "react";
+import PriorityForm from "../components/PriorityForm";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <VStack textAlign="center" minH="100%" mt="5%" spacing={8}>
         <TodoBox />
       </VStack>
+      <PriorityForm handleOnSubmit={() => {}} />
     </>
   );
 }
