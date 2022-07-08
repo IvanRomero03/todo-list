@@ -33,11 +33,5 @@ export const typesColorSchemes = [
   "cyan",
   "purple",
   "pink",
-  "linkedin",
-  "facebook",
-  "messenger",
-  "whatsapp",
-  "twitter",
-  "telegram",
 ];
 export default PriorityItem;

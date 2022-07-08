@@ -22,8 +22,10 @@ import {
   Center,
   BadgeProps,
   Textarea,
+  VStack,
+  HStack,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Todo } from "../types/todo";
 import { useQuery } from "react-query";
 import { getTodo } from "../pages/api/getTodo";
@@ -42,19 +44,36 @@ import PriorityItem, {
 import PriorityForm from "./PriorityForm";
 type Props = {
   idTodo?: number;
+  onClose: () => void;
 };
 
-const EditTodo = ({ idTodo }: Props) => {
+const EditTodo = ({ idTodo, onClose }: Props) => {
   const { data, isLoading, isError } = useQuery(
     "todo",
     async () => await getTodo(idTodo ?? 1)
   );
 
-  const PriorityArray: PriorityItem[] = defaultFullPriorityArray();
+  const [priorityArray, setPriorityArray] = useState<PriorityItem[]>(
+    defaultFullPriorityArray
+  );
 
-  const handleAddPriority = (priorityItem: PriorityItem): null => {
-    PriorityArray.push(priorityItem);
+  const handleAddPriority = (priorityItem: PriorityItem) => {
+    console.log("add");
+    console.log(priorityItem);
+    setPriorityArray([...priorityArray, priorityItem]);
+
     return null;
+  };
+
+  const handleDeletePriority = (priorityItem: PriorityItem) => {
+    console.log("delete");
+    priorityArray.splice(priorityArray.indexOf(priorityItem), 1);
+    console.log(priorityItem);
+  };
+
+  const handleOnSubmit = (values) => {
+    console.log("submit");
+    console.log(values);
   };
 
   return (
@@ -62,13 +81,12 @@ const EditTodo = ({ idTodo }: Props) => {
       <Formik
         initialValues={data ?? ({} as Todo)}
         onSubmit={(values, actions) => {
-          console.log(values);
-          console.log(actions);
+          handleOnSubmit(values);
         }}
       >
         {({ values, setFieldValue }) => (
           <Form>
-            <Container alignItems={"left"} minW="97.5%" m="1%">
+            <VStack alignItems={"left"} minW="97.5%" m="1%">
               <ModalHeader>
                 <Code>Title</Code>
                 <Field
@@ -115,26 +133,62 @@ const EditTodo = ({ idTodo }: Props) => {
                     />
                   </MenuButton>
                   <MenuList alignContent={"center"}>
-                    {PriorityArray.map((item) => (
+                    {priorityArray.map((item) => (
                       <MenuItem
                         onClick={() => {
                           setFieldValue("priority", item.priority);
                           setFieldValue("priorityColor", item.priorityColor);
                         }}
                       >
-                        <PrioritySelectItem
-                          priority={item.priority}
-                          priorityColor={item.priorityColor}
-                        />
+                        <Container>
+                          <HStack>
+                            <PrioritySelectItem
+                              priority={item.priority}
+                              priorityColor={item.priorityColor}
+                            />
+                            <Button
+                              borderWidth={"1px"}
+                              onClick={() => handleDeletePriority(item)}
+                              size="xs"
+                              // FIXME bug of selecting on delete
+                              // TODO add edit priority
+                            >
+                              <DeleteIcon />
+                            </Button>
+                          </HStack>
+                        </Container>
                       </MenuItem>
                     ))}
-                    <MenuItem closeOnSelect={false}>
+                    <Container minW={"100%"} alignContent={"center"}>
                       <PriorityForm handleOnSubmit={handleAddPriority} />
-                    </MenuItem>
+                    </Container>
                   </MenuList>
                 </Menu>
               </ModalBody>
-            </Container>
+              <Container minW="100%" w={"100%"} alignContent={"right"}>
+                <Button
+                  type="submit"
+                  variant="outline"
+                  m="1%"
+                  colorScheme={"blue"}
+                  onClick={onClose}
+                  w="45%"
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="outline"
+                  m="1%"
+                  ml="5%"
+                  colorScheme={"red"}
+                  onClick={onClose}
+                  w="45%"
+                  // TODO: add delete todo
+                >
+                  Delete
+                </Button>
+              </Container>
+            </VStack>
           </Form>
         )}
       </Formik>
@@ -148,7 +202,7 @@ export const PrioritySelectItem = ({
 }: PriorityItem) => {
   return (
     <>
-      <Center minW="90%" minH="90%">
+      <Center minW="50%" minH="50%">
         <Badge colorScheme={priorityColor} minW="50%" minH="50%" mx="5%">
           <Center>{priority}</Center>
         </Badge>

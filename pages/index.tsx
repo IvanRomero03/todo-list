@@ -16,7 +16,6 @@ export default function Home() {
       <VStack textAlign="center" minH="100%" mt="5%" spacing={8}>
         <TodoBox />
       </VStack>
-      <PriorityForm handleOnSubmit={() => {}} />
     </>
   );
 }

@@ -35,7 +35,7 @@ const TodoBox = ({ idTodo }: Props) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <EditTodo idTodo={idTodo} />
+        <EditTodo idTodo={idTodo} onClose={onClose} />
       </Modal>
       <Box
         mt="2%"
@@ -74,9 +74,6 @@ const TodoBox = ({ idTodo }: Props) => {
           <Text>{description}</Text>
           {/* Status */}
           <Badge colorScheme="gray">{status}</Badge>
-          {/* <Button variant={"outline"}>
-          <Text>Edit</Text>
-        </Button> */}
         </VStack>
       </Box>
     </>
