@@ -45,13 +45,14 @@ import PriorityForm from "./PriorityForm";
 type Props = {
   idTodo?: number;
   onClose: () => void;
+  onSubmit: (todo: Todo) => void;
+  onDelete: (idTodo?: number) => void;
 };
 
-const EditTodo = ({ idTodo, onClose }: Props) => {
-  const { data, isLoading, isError } = useQuery(
-    "todo",
-    async () => await getTodo(idTodo ?? 1)
-  );
+const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
+  const { data, isLoading, isError } = idTodo
+    ? useQuery("todo", async () => await getTodo(idTodo))
+    : { data: undefined, isLoading: undefined, isError: undefined };
 
   const [priorityArray, setPriorityArray] = useState<PriorityItem[]>(
     defaultFullPriorityArray

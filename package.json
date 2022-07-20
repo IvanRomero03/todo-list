@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.2",
-    "@chakra-ui/react": "^2.2.1",
+    "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "axios": "^0.27.2",
     "formik": "^2.2.9",
-    "framer-motion": "^6.4.2",
+    "framer-motion": "^6.5.1",
+    "mysql": "^2.18.1",
     "next": "12.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -23,6 +24,7 @@
     "react-query": "^3.39.1"
   },
   "devDependencies": {
+    "@types/mysql": "^2.15.21",
     "@types/node": "^18.0.3",
     "@types/react": "^18.0.15",
     "eslint": "8.19.0",

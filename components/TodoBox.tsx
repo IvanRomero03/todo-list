@@ -35,7 +35,12 @@ const TodoBox = ({ idTodo }: Props) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <EditTodo idTodo={idTodo} onClose={onClose} />
+        <EditTodo
+          idTodo={idTodo}
+          onClose={onClose}
+          onDelete={() => {}}
+          onSubmit={() => {}}
+        />
       </Modal>
       <Box
         mt="2%"
