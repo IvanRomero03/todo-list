@@ -12,7 +12,7 @@ export const defaultTodo = (): Todo => {
     idTodo: 1,
     title: "To-Do",
     description: "loading...",
-    status: "high",
+    status: "On-going",
     priority: "loading",
     priorityColor: "red",
   };

@@ -11,7 +11,7 @@ import {
   Modal,
   useDisclosure,
 } from "@chakra-ui/react";
-import { getTodo } from "../pages/api/getTodo";
+import getTodo from "../pages/api/getTodo";
 import { useQuery } from "react-query";
 import { Todo, defaultTodo } from "../types/todo";
 import { EditIcon } from "@chakra-ui/icons";
@@ -26,11 +26,12 @@ const TodoBox = ({ idTodo }: Props) => {
 
   const { data, isLoading, isError } = useQuery(
     "todo",
-    async () => await getTodo(idTodo ?? 1)
+    async () => await getTodo(idTodo ?? 2)
   );
 
-  const { description, priority, priorityColor, status, title } =
-    data ?? defaultTodo();
+  const { description, priority, priorityColor, status, title } = data
+    ? data[0]
+    : defaultTodo();
 
   return (
     <>
@@ -45,7 +46,7 @@ const TodoBox = ({ idTodo }: Props) => {
       <Box
         mt="2%"
         alignContent={"left"}
-        maxW="90%"
+        maxW="20%"
         borderWidth={"2px"}
         borderRadius="lg"
       >
@@ -75,8 +76,11 @@ const TodoBox = ({ idTodo }: Props) => {
           <Heading as="h3" size="lg">
             {title}
           </Heading>
-          {/* Description */}
-          <Text>{description}</Text>
+          {
+            /* Description */
+            //TODO: Fix noOflines bug
+          }
+          <Text textAlign={"justify"}>{description}</Text>
           {/* Status */}
           <Badge colorScheme="gray">{status}</Badge>
         </VStack>

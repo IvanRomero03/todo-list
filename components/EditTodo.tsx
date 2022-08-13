@@ -28,7 +28,7 @@ import {
 import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Todo } from "../types/todo";
 import { useQuery } from "react-query";
-import { getTodo } from "../pages/api/getTodo";
+import getTodo from "../pages/api/getTodo";
 import {
   Formik,
   FormikHelpers,
@@ -42,6 +42,7 @@ import PriorityItem, {
   defaultPriorityArray,
 } from "../types/priority";
 import PriorityForm from "./PriorityForm";
+import { Status } from "../types/status";
 type Props = {
   idTodo?: number;
   onClose: () => void;
@@ -50,10 +51,13 @@ type Props = {
 };
 
 const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
-  const { data, isLoading, isError } = idTodo
-    ? useQuery("todo", async () => await getTodo(idTodo))
-    : { data: undefined, isLoading: undefined, isError: undefined };
+  const { data, isLoading, isError } = useQuery(
+    "todo",
+    async () => await getTodo(idTodo)
+  );
+  const todo = data ? data[0] : null;
 
+  // TODO: change default values to the users priorities
   const [priorityArray, setPriorityArray] = useState<PriorityItem[]>(
     defaultFullPriorityArray
   );
@@ -62,25 +66,28 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
     console.log("add");
     console.log(priorityItem);
     setPriorityArray([...priorityArray, priorityItem]);
-
+    // TODO: add priority to the database
     return null;
   };
 
   const handleDeletePriority = (priorityItem: PriorityItem) => {
     console.log("delete");
     priorityArray.splice(priorityArray.indexOf(priorityItem), 1);
+    setPriorityArray([...priorityArray]);
+    // TODO: delete priority from the database
     console.log(priorityItem);
   };
 
   const handleOnSubmit = (values) => {
     console.log("submit");
     console.log(values);
+    // TODO: submit to the database
   };
 
   return (
     <ModalContent minW="90%" minH="60%">
       <Formik
-        initialValues={data ?? ({} as Todo)}
+        initialValues={todo}
         onSubmit={(values, actions) => {
           handleOnSubmit(values);
         }}
@@ -99,6 +106,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                   style={{
                     fontWeight: "bold",
                   }}
+                  defaultValue={values.title ?? null}
                 />
                 <ModalCloseButton />
               </ModalHeader>
@@ -112,18 +120,26 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                   size="md"
                   mt="1%"
                   mb="1%"
+                  defaultValue={values.description ?? null}
                 />
                 <Code>Status</Code>
-
-                <Field
+                <Select
                   name="status"
-                  as={Input}
-                  placeholder="status"
                   variant="filled"
                   size="md"
                   mt="1%"
                   mb="1%"
-                />
+                  defaultValue={values.status ?? null}
+                  onChange={(e) => {
+                    setFieldValue("status", e.target.value);
+                  }}
+                >
+                  {Object.values(Status).map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </Select>
 
                 <Code>Priority</Code>
                 <Menu>
@@ -140,6 +156,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                           setFieldValue("priority", item.priority);
                           setFieldValue("priorityColor", item.priorityColor);
                         }}
+                        key={item.priority}
                       >
                         <Container>
                           <HStack>
@@ -152,6 +169,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                               onClick={() => handleDeletePriority(item)}
                               size="xs"
                               // FIXME bug of selecting on delete
+                              // can fix this by changing in the onClick above
                               // TODO add edit priority
                             >
                               <DeleteIcon />
