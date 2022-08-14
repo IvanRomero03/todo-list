@@ -19,9 +19,10 @@ import EditTodo from "./EditTodo";
 
 type Props = {
   idTodo?: number;
+  idUser: number;
 };
 
-const TodoBox = ({ idTodo }: Props) => {
+const TodoBox = ({ idTodo, idUser }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data, isLoading, isError } = useQuery(
@@ -41,6 +42,7 @@ const TodoBox = ({ idTodo }: Props) => {
           onClose={onClose}
           onDelete={() => {}}
           onSubmit={() => {}}
+          idUser={idUser}
         />
       </Modal>
       <Box

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ModalContent,
   ModalHeader,
@@ -43,30 +43,39 @@ import PriorityItem, {
 } from "../types/priority";
 import PriorityForm from "./PriorityForm";
 import { Status } from "../types/status";
+import createPriority from "../pages/api/createPriority";
+import getUserPriorities from "../pages/api/getUserPriorities";
 type Props = {
   idTodo?: number;
   onClose: () => void;
   onSubmit: (todo: Todo) => void;
   onDelete: (idTodo?: number) => void;
+  idUser: number;
 };
 
-const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
-  const { data, isLoading, isError } = useQuery(
-    "todo",
-    async () => await getTodo(idTodo)
-  );
-  const todo = data ? data[0] : null;
+const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
+  let todo;
+  if (idTodo) {
+    const { data, isLoading, isError } = useQuery(
+      "todo",
+      async () => await getTodo(idTodo)
+    );
+    todo = data[0];
+  } else {
+    todo = {} as Todo;
+  }
 
-  // TODO: change default values to the users priorities
-  const [priorityArray, setPriorityArray] = useState<PriorityItem[]>(
-    defaultFullPriorityArray
-  );
+  const [priorityArray, setPriorityArray] = useState<PriorityItem[]>([]);
 
-  const handleAddPriority = (priorityItem: PriorityItem) => {
+  const handleAddPriority = async (priorityItem: PriorityItem) => {
     console.log("add");
     console.log(priorityItem);
+    await createPriority(
+      idUser,
+      priorityItem.priority,
+      priorityItem.priorityColor
+    );
     setPriorityArray([...priorityArray, priorityItem]);
-    // TODO: add priority to the database
     return null;
   };
 
@@ -81,8 +90,16 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
   const handleOnSubmit = (values) => {
     console.log("submit");
     console.log(values);
-    // TODO: submit to the database
+    onSubmit(values);
   };
+
+  useEffect(() => {
+    const load = async () => {
+      const priorities = await getUserPriorities(idUser);
+      setPriorityArray(priorities);
+    };
+    load();
+  }, []);
 
   return (
     <ModalContent minW="90%" minH="60%">
@@ -106,7 +123,6 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                   style={{
                     fontWeight: "bold",
                   }}
-                  defaultValue={values.title ?? null}
                 />
                 <ModalCloseButton />
               </ModalHeader>
@@ -120,7 +136,6 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                   size="md"
                   mt="1%"
                   mb="1%"
-                  defaultValue={values.description ?? null}
                 />
                 <Code>Status</Code>
                 <Select
@@ -129,7 +144,6 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                   size="md"
                   mt="1%"
                   mb="1%"
-                  defaultValue={values.status ?? null}
                   onChange={(e) => {
                     setFieldValue("status", e.target.value);
                   }}
@@ -145,8 +159,8 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                 <Menu>
                   <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                     <PrioritySelectItem
-                      priority={values.priority ?? "Priority"}
-                      priorityColor={values.priorityColor ?? "gray"}
+                      priority={values?.priority ?? "Priority"}
+                      priorityColor={values?.priorityColor ?? "gray"}
                     />
                   </MenuButton>
                   <MenuList alignContent={"center"}>
@@ -166,10 +180,18 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                             />
                             <Button
                               borderWidth={"1px"}
-                              onClick={() => handleDeletePriority(item)}
+                              onClick={() => {
+                                handleDeletePriority(item);
+                                setFieldValue(
+                                  "priority",
+                                  priorityArray[0].priority
+                                );
+                                setFieldValue(
+                                  "priorityColor",
+                                  priorityArray[0].priorityColor
+                                );
+                              }}
                               size="xs"
-                              // FIXME bug of selecting on delete
-                              // can fix this by changing in the onClick above
                               // TODO add edit priority
                             >
                               <DeleteIcon />
@@ -200,7 +222,10 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete }: Props) => {
                   m="1%"
                   ml="5%"
                   colorScheme={"red"}
-                  onClick={onClose}
+                  onClick={() => {
+                    onClose();
+                    onDelete(idTodo ?? 0);
+                  }}
                   w="45%"
                   // TODO: add delete todo
                 >

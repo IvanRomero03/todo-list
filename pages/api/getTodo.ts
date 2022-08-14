@@ -5,7 +5,6 @@ const getTodo = async (id: number) => {
   if (!id) {
     console.error("No id provided");
     return null;
-    throw new Error("No id provided");
   }
   const response = await client.post(`/getTodo`, { idTodo: id });
   if (response.status != 200) {

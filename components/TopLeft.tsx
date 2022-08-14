@@ -39,9 +39,15 @@ const TopLeft = ({ username }: Props) => {
           </MenuButton>
           <MenuList>
             <MenuItem>
+              {/* //TODO add functionality to Setting
+               might need a modal or a complete page */}
               <Text>Settings</Text>
             </MenuItem>
             <MenuItem>
+              {
+                //TODO add functionality to logout
+                // just need to clean up the local storage and redirect to the login page
+              }
               <Text>Sing Out</Text>
             </MenuItem>
           </MenuList>

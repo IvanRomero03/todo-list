@@ -21,7 +21,9 @@ import React, { useEffect, useState } from "react";
 
 import { AddIcon } from "@chakra-ui/icons";
 import EditTodo from "../components/EditTodo";
+import createTodo from "./api/createTodo";
 import { useRouter } from "next/router";
+import { Todo } from "../types/todo";
 
 export default function Home() {
   const router = useRouter();
@@ -44,18 +46,28 @@ export default function Home() {
     setIdUser(localStorage.getItem("idUser"));
   }, []);
 
-  useEffect(() => {
-    if (username) {
-      console.log("User is logged in");
-    } else {
-      console.log("User is not logged in");
-    }
-  }, []);
+  const handleCreateTodo = async (todo: Todo) => {
+    console.log(todo, "creating");
+    const response = await createTodo(
+      Number(idUser),
+      todo.title,
+      todo.description,
+      todo.status,
+      todo.priority,
+      todo.priorityColor
+    );
+    console.log(response);
+  };
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <EditTodo onClose={onClose} onDelete={() => {}} onSubmit={() => {}} />
+        <EditTodo
+          onClose={onClose}
+          onDelete={() => {}}
+          onSubmit={handleCreateTodo}
+          idUser={Number(idUser)}
+        />
       </Modal>
       <Header title="To-Do" />
       <TopLeft username={username} />
@@ -85,7 +97,7 @@ export default function Home() {
       </Flex>
       <VStack textAlign="center" minH="100%" mt="5%" spacing={8}>
         Sorting shie'
-        <TodoBox idTodo={2} />
+        <TodoBox idTodo={2} idUser={Number(idUser)} />
       </VStack>
     </>
   );
