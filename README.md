@@ -4,7 +4,7 @@ This is a simple todo app to manage your task in a simple but interactive way
 
 You can check the deploy [here](https://todo-list-ivanromero03.vercel.app/)  :)
 
-## Techonology stack
+## Tech stack
 
 - Chakra UI as my main Ui Library
 - Next.js and React.Js for the frontend
