@@ -97,6 +97,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
       queryClient.invalidateQueries("todo" + idTodo);
       queryClient.invalidateQueries("todos " + data.priority);
       queryClient.invalidateQueries("todos" + data.status);
+      queryClient.invalidateQueries("todos" + todo?.status);
     },
   });
   const handleOnSubmit = (values) => {
