@@ -125,6 +125,7 @@ export default function Home() {
                 priority={priority.priority}
                 priorityColor={priority.priorityColor}
                 idUser={Number(idUser)}
+                key={idUser + " " + priority.idPriority}
               />
             ))}
           </>
