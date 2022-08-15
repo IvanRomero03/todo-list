@@ -51,10 +51,15 @@ export default function Home() {
   useEffect(() => {
     setUsername(localStorage.getItem("user"));
     setIdUser(localStorage.getItem("idUser"));
-    if (!username) {
+  }, []);
+
+  useEffect(() => {
+    if (username) {
+      router.push("/");
+    } else {
       router.push("/sign");
     }
-  }, []);
+  }, [username]);
 
   const handleCreateTodo = async (todo: Todo) => {
     console.log(todo, "creating");
