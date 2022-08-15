@@ -55,11 +55,11 @@ type Props = {
 
 const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
   let todo;
+  const { data, isLoading, isError } = useQuery(
+    "todo" + idTodo,
+    async () => await getTodo(idTodo)
+  );
   if (idTodo) {
-    const { data, isLoading, isError } = useQuery(
-      "todo" + idTodo,
-      async () => await getTodo(idTodo)
-    );
     todo = data[0];
   } else {
     todo = {} as Todo;

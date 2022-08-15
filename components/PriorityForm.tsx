@@ -61,6 +61,7 @@ const PriorityForm = ({ handleOnSubmit, defaultValues }: Props) => {
                     onClick={() => {
                       setPriorityColor(priorityColor);
                     }}
+                    key={priorityColor}
                   >
                     <PrioritySelectItem
                       priority={priorityColor}

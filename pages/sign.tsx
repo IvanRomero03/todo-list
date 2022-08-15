@@ -92,10 +92,16 @@ const SingInPage = () => {
             }}
           >
             <Form>
-              <Code> To-Do's name </Code>
+              <Code> To-Do&apos;s name </Code>
               <Field name="name" placeholder="Name" as={Input} m="2%" />
               <Code> Password </Code>
-              <Field name="password" placeholder="Password" as={Input} m="2%" />
+              <Field
+                name="password"
+                placeholder="Password"
+                as={Input}
+                m="2%"
+                type={"password"}
+              />
               <Button type="submit" m="2%">
                 Sign In
               </Button>
@@ -112,10 +118,16 @@ const SingInPage = () => {
             }}
           >
             <Form>
-              <Code> To-Do's name </Code>
+              <Code> To-Do&apos;s name </Code>
               <Field name="name" placeholder="Name" as={Input} m="2%" />
               <Code> Password </Code>
-              <Field name="password" placeholder="Password" as={Input} m="2%" />
+              <Field
+                name="password"
+                placeholder="Password"
+                as={Input}
+                m="2%"
+                type={"password"}
+              />
               <Button type="submit" m="2%">
                 Sign Up
               </Button>
