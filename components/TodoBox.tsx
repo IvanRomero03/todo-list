@@ -18,7 +18,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import EditTodo from "./EditTodo";
 
 type Props = {
-  idTodo?: number;
+  idTodo: number;
   idUser: number;
 };
 
@@ -26,14 +26,15 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data, isLoading, isError } = useQuery(
-    "todo",
-    async () => await getTodo(idTodo ?? 2)
+    "todo" + idTodo,
+    async () => await getTodo(idTodo)
   );
 
   const { description, priority, priorityColor, status, title } = data
     ? data[0]
     : defaultTodo();
 
+  //TODO: add updateTodo
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -48,7 +49,7 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
       <Box
         mt="2%"
         alignContent={"left"}
-        maxW="20%"
+        maxW="100%"
         borderWidth={"2px"}
         borderRadius="lg"
       >

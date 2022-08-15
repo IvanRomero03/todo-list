@@ -10,6 +10,7 @@ import {
   Select,
   Divider,
   Code,
+  HStack,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../components/ColorModeSwitcher";
 import Header from "../components/header";
@@ -24,17 +25,23 @@ import EditTodo from "../components/EditTodo";
 import createTodo from "./api/createTodo";
 import { useRouter } from "next/router";
 import { Todo } from "../types/todo";
+import VerticalTodoStack from "../components/verticalStatusTodoStack";
+import VerticalPriorityTodoStack from "../components/verticalPrioritiesTodoStack";
+import { Status } from "../types/status";
+import getUsersPrioritiesIds from "./api/getUsersPrioritiesIds";
+import { useQuery } from "react-query";
 
 export default function Home() {
   const router = useRouter();
   const handleOnCreate = () => {
     console.log("create");
   };
-
+  const statusArray = Object.values(Status);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [username, setUsername] = useState("");
   const [idUser, setIdUser] = useState("");
+
   enum OrderMode {
     status = "status",
     priority = "priority",
@@ -59,6 +66,12 @@ export default function Home() {
     console.log(response);
   };
 
+  const { data, isLoading, isError } = useQuery(
+    "usersPrioritiesIds" + idUser,
+    async () => await getUsersPrioritiesIds(Number(idUser))
+  );
+  const prioritiesArray = data ? data : [];
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -72,7 +85,7 @@ export default function Home() {
       <Header title="To-Do" />
       <TopLeft username={username} />
       <HowToUse />
-      <Divider mt="1%" mb="1%" />
+      <Divider mt="1%" mb="1%" minW="100%" maxW="300%" />
       <Flex maxW="80%">
         <Spacer maxW="17.5%" />
         <VStack spacing="4" alignContent={"left"}>
@@ -95,10 +108,25 @@ export default function Home() {
           onClick={onOpen}
         />
       </Flex>
-      <VStack textAlign="center" minH="100%" mt="5%" spacing={8}>
-        Sorting shie'
-        <TodoBox idTodo={2} idUser={Number(idUser)} />
-      </VStack>
+      <HStack mt="2%" spacing={6} alignItems="flex-start">
+        {orderMode === OrderMode.status
+          ? statusArray.map((status) => (
+              <VerticalTodoStack
+                status={status}
+                idUser={Number(idUser)}
+                key={idUser + " " + status}
+              />
+            ))
+          : prioritiesArray.map(({ idPriority, priority, priorityColor }) => (
+              <VerticalPriorityTodoStack
+                idPriority={idPriority}
+                priority={priority}
+                priorityColor={priorityColor}
+                idUser={Number(idUser)}
+                key={idUser + " " + idPriority}
+              />
+            ))}
+      </HStack>
     </>
   );
 }

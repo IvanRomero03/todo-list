@@ -10,6 +10,7 @@ const createTodo = async (
   priorityColor: string
 ) => {
   const priorityId = await getPriorityId(idUser, priority, priorityColor);
+  console.log(priorityId);
   const response = await client.post("/createTodo", {
     idUser: idUser,
     title: title,

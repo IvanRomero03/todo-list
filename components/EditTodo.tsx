@@ -57,7 +57,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
   let todo;
   if (idTodo) {
     const { data, isLoading, isError } = useQuery(
-      "todo",
+      "todo" + idTodo,
       async () => await getTodo(idTodo)
     );
     todo = data[0];
@@ -144,6 +144,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
                   size="md"
                   mt="1%"
                   mb="1%"
+                  defaultValue={values.status ?? "Not Started"}
                   onChange={(e) => {
                     setFieldValue("status", e.target.value);
                   }}
