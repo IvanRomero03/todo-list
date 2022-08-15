@@ -68,11 +68,9 @@ export default function Home() {
   };
 
   const { data, isLoading, isError } = useQuery(
-    "usersPrioritiesIds",
+    "usersPrioritiesIds" + idUser,
     async () => await getUsersPrioritiesIds(Number(idUser))
   );
-  data?.reverse();
-  const prioritiesArray = data ? data : [];
 
   return (
     <>
@@ -111,23 +109,26 @@ export default function Home() {
         />
       </Flex>
       <HStack mt="2%" spacing={6} alignItems="flex-start">
-        {orderMode === OrderMode.status
-          ? statusArray.map((status) => (
-              <VerticalTodoStack
-                status={status}
-                idUser={Number(idUser)}
-                key={idUser + " " + status}
-              />
-            ))
-          : prioritiesArray.map(({ idPriority, priority, priorityColor }) => (
+        {orderMode === OrderMode.status ? (
+          statusArray.map((status) => (
+            <VerticalTodoStack
+              status={status}
+              idUser={Number(idUser)}
+              key={idUser + " " + status}
+            />
+          ))
+        ) : (
+          <>
+            {data?.map((priority) => (
               <VerticalPriorityTodoStack
-                idPriority={idPriority}
-                priority={priority}
-                priorityColor={priorityColor}
+                idPriority={priority.idPriority}
+                priority={priority.priority}
+                priorityColor={priority.priorityColor}
                 idUser={Number(idUser)}
-                key={idUser + " " + idPriority}
               />
             ))}
+          </>
+        )}
       </HStack>
     </>
   );
