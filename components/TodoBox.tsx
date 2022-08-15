@@ -16,6 +16,7 @@ import { useQuery } from "react-query";
 import { Todo, defaultTodo } from "../types/todo";
 import { EditIcon } from "@chakra-ui/icons";
 import EditTodo from "./EditTodo";
+import updateTodo from "../pages/api/updateTodo";
 
 type Props = {
   idTodo: number;
@@ -30,6 +31,22 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
     async () => await getTodo(idTodo)
   );
 
+  const onEdit = async (values) => {
+    console.log("HERE");
+    console.log(values, "update");
+    const response = await updateTodo(
+      idUser,
+      idTodo,
+      values.title,
+      values.description,
+      values.status,
+      values.priority,
+      values.priorityColor
+    );
+    console.log(response);
+    return { priority: values.priority, status: values.status };
+  };
+
   const { description, priority, priorityColor, status, title } = data
     ? data[0]
     : defaultTodo();
@@ -42,7 +59,7 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
           idTodo={idTodo}
           onClose={onClose}
           onDelete={() => {}}
-          onSubmit={() => {}}
+          onSubmit={onEdit}
           idUser={idUser}
         />
       </Modal>
