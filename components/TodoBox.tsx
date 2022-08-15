@@ -62,7 +62,7 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries("todos " + data.priority);
       queryClient.invalidateQueries("todos" + data.status);
-      queryClient.invalidateQueries("usersPrioritiesIds" + idUser);
+      queryClient.invalidateQueries("usersPrioritiesIds");
     },
   });
 
