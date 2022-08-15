@@ -10,9 +10,7 @@ const deletePriorityCallback = async (
 
   const response = await deletePriority(idUser, priorityId);
   if (response.status != 200) {
-    console.log(response);
   } else {
-    console.log(response.data);
     return response.data;
   }
 };
