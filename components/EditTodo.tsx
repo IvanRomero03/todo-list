@@ -50,7 +50,7 @@ type Props = {
   idTodo?: number;
   onClose: () => void;
   onSubmit: (todo: Todo) => any;
-  onDelete: (idTodo?: number) => any;
+  onDelete: (idTodo?: number, idUser?: number) => any;
   idUser: number;
 };
 
@@ -234,7 +234,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
                   colorScheme={"red"}
                   onClick={() => {
                     onClose();
-                    onDelete(idTodo ?? 0);
+                    onDelete(idTodo, idUser);
                   }}
                   w="45%"
                   // TODO: add delete todo

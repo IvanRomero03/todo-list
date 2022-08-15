@@ -12,11 +12,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import getTodo from "../pages/api/getTodo";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Todo, defaultTodo } from "../types/todo";
 import { EditIcon } from "@chakra-ui/icons";
 import EditTodo from "./EditTodo";
 import updateTodo from "../pages/api/updateTodo";
+import deleteTodo from "../pages/api/deleteTodo";
 
 type Props = {
   idTodo: number;
@@ -46,19 +47,41 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
     console.log(response);
     return { priority: values.priority, status: values.status };
   };
-
+  const defaultTodoObject = defaultTodo();
   const { description, priority, priorityColor, status, title } = data
-    ? data[0]
-    : defaultTodo();
+    ? data.lenght != 1
+      ? data[0]
+      : defaultTodoObject
+    : defaultTodoObject;
 
-  //TODO: add updateTodo
+  const queryClient = useQueryClient();
+
+  const onDelete = async () => {
+    const response = await deleteTodo(idUser, idTodo);
+    return { priority: priority, status: status };
+  };
+
+  const { mutate } = useMutation(onDelete, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("todos " + data.priority);
+      queryClient.invalidateQueries("todos" + data.status);
+    },
+  });
+
+  const handleOnDelete = () => {
+    //destroy this component
+
+    mutate();
+    // destroy the todo
+  };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <EditTodo
           idTodo={idTodo}
           onClose={onClose}
-          onDelete={() => {}}
+          onDelete={handleOnDelete}
           onSubmit={onEdit}
           idUser={idUser}
         />
@@ -73,7 +96,6 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
         <VStack spacing="4" alignContent={"left"} m="6">
           <HStack spacing="4">
             <Container alignContent={"center"}>
-              {/* Priority */}
               <Badge colorScheme={priorityColor}>
                 <Box m="1.5">
                   <Text>{priority}</Text>
@@ -81,7 +103,6 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
               </Badge>
             </Container>
             <Container alignContent={"Right"}>
-              {/* Edit */}
               <Button
                 colorScheme="blue"
                 variant="outline"
@@ -92,16 +113,10 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
               </Button>
             </Container>
           </HStack>
-          {/* Title */}
           <Heading as="h3" size="lg">
             {title}
           </Heading>
-          {
-            /* Description */
-            //TODO: Fix noOflines bug
-          }
           <Text textAlign={"justify"}>{description}</Text>
-          {/* Status */}
           <Badge colorScheme="gray">{status}</Badge>
         </VStack>
       </Box>
