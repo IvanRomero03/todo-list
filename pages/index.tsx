@@ -68,7 +68,7 @@ export default function Home() {
   };
 
   const { data, isLoading, isError } = useQuery(
-    "usersPrioritiesIds" + idUser,
+    "usersPrioritiesIds",
     async () => await getUsersPrioritiesIds(Number(idUser))
   );
   data?.reverse();

@@ -76,7 +76,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
       priorityItem.priorityColor
     );
     setPriorityArray([...priorityArray, priorityItem]);
-    queryClient.invalidateQueries("usersPrioritiesIds" + idUser);
+    queryClient.invalidateQueries("usersPrioritiesIds");
     return null;
   };
 
@@ -115,7 +115,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
     setFieldValue("priority", priorityArray[0].priority);
     setFieldValue("priorityColor", priorityArray[0].priorityColor);
     queryClient.invalidateQueries("todos " + data.priority);
-    queryClient.invalidateQueries("usersPrioritiesIds" + idUser);
+    queryClient.invalidateQueries("usersPrioritiesIds");
   };
 
   return (
