@@ -22,6 +22,7 @@ import createUser from "./api/createUser";
 import getUniqueUsername from "./api/getUniqueUsername";
 import getValidUser from "./api/getValidUser";
 import { useRouter } from "next/router";
+import Header from "../components/header";
 
 const SingInPage = () => {
   //TODO add sanitization validation to the form
@@ -67,6 +68,7 @@ const SingInPage = () => {
 
   return (
     <>
+      <Header title={"Signing page"} />
       {isVisible && (
         <Alert status="warning">
           <AlertIcon />

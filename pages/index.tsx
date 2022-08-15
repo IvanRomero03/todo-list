@@ -49,17 +49,14 @@ export default function Home() {
   const [orderMode, setOrderMode] = useState<OrderMode>(OrderMode.status);
 
   useEffect(() => {
-    setUsername(localStorage.getItem("user"));
-    setIdUser(localStorage.getItem("idUser"));
-  }, []);
-
-  useEffect(() => {
-    if (username) {
-      router.push("/");
-    } else {
+    const user = localStorage.getItem("user");
+    if (!user) {
       router.push("/sign");
+    } else {
+      setUsername(user);
+      setIdUser(localStorage.getItem("idUser"));
     }
-  }, [username]);
+  }, []);
 
   const handleCreateTodo = async (todo: Todo) => {
     console.log(todo, "creating");
@@ -72,12 +69,14 @@ export default function Home() {
       todo.priorityColor
     );
     console.log(response);
+    return { priority: todo.priority, status: todo.status };
   };
 
   const { data, isLoading, isError } = useQuery(
     "usersPrioritiesIds" + idUser,
     async () => await getUsersPrioritiesIds(Number(idUser))
   );
+  data?.reverse();
   const prioritiesArray = data ? data : [];
 
   return (

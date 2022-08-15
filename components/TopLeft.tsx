@@ -15,12 +15,14 @@ import {
 import { FaHamburger } from "react-icons/fa";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
 
 type Props = {
   username: string;
 };
 
 const TopLeft = ({ username }: Props) => {
+  const router = useRouter();
   return (
     <Container mt="2%" alignContent={"left"} maxW="90%">
       <Flex alignContent={"center"}>
@@ -38,12 +40,20 @@ const TopLeft = ({ username }: Props) => {
             />
           </MenuButton>
           <MenuList>
+            {/*
             <MenuItem>
-              {/* //TODO add functionality to Setting
-               might need a modal or a complete page */}
+              {//TODO add functionality to Setting
+               might need a modal or a complete page }
               <Text>Settings</Text>
             </MenuItem>
-            <MenuItem>
+            */}
+            <MenuItem
+              onClick={() => {
+                localStorage.removeItem("user");
+                localStorage.removeItem("idUser");
+                router.push("/sign");
+              }}
+            >
               {
                 //TODO add functionality to logout
                 // just need to clean up the local storage and redirect to the login page

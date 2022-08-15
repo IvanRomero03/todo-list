@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Todo } from "../types/todo";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import getTodo from "../pages/api/getTodo";
 import {
   Formik,
@@ -36,6 +36,7 @@ import {
   Form,
   Field,
   FieldProps,
+  validateYupSchema,
 } from "formik";
 import PriorityItem, {
   defaultFullPriorityArray,
@@ -48,8 +49,8 @@ import getUserPriorities from "../pages/api/getUserPriorities";
 type Props = {
   idTodo?: number;
   onClose: () => void;
-  onSubmit: (todo: Todo) => void;
-  onDelete: (idTodo?: number) => void;
+  onSubmit: (todo: Todo) => any;
+  onDelete: (idTodo?: number) => any;
   idUser: number;
 };
 
@@ -87,10 +88,18 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
     console.log(priorityItem);
   };
 
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(onSubmit, {
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries("todo" + idTodo);
+      queryClient.invalidateQueries("todos " + data.priority);
+      queryClient.invalidateQueries("todos" + data.status);
+    },
+  });
   const handleOnSubmit = (values) => {
     console.log("submit");
     console.log(values);
-    onSubmit(values);
+    mutate(values);
   };
 
   useEffect(() => {
