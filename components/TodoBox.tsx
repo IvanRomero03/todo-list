@@ -33,8 +33,6 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
   );
 
   const onEdit = async (values) => {
-    console.log("HERE");
-    console.log(values, "update");
     const response = await updateTodo(
       idUser,
       idTodo,
@@ -44,7 +42,6 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
       values.priority,
       values.priorityColor
     );
-    console.log(response);
     return { priority: values.priority, status: values.status };
   };
   const defaultTodoObject = defaultTodo();
@@ -65,6 +62,7 @@ const TodoBox = ({ idTodo, idUser }: Props) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries("todos " + data.priority);
       queryClient.invalidateQueries("todos" + data.status);
+      queryClient.invalidateQueries("usersPrioritiesIds" + idUser);
     },
   });
 

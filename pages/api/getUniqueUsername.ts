@@ -7,7 +7,6 @@ const getUniqueUsername = async (name: string) => {
   if (response.status != 200) {
     throw new Error("Error getting unique username");
   } else {
-    console.log(response.data);
     if (response.data == true) {
       return true;
     } else {

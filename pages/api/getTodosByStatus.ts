@@ -9,7 +9,6 @@ const getTodosByStatus = async (idUser: number, status: string) => {
   if (response.status != 200) {
     throw new Error("Error getting todos");
   } else {
-    console.log(response.data);
     return response.data;
   }
 };

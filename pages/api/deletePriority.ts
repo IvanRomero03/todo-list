@@ -8,7 +8,6 @@ const deletePriority = async (idUser: number, priority: number) => {
   if (response.status != 200) {
     throw new Error("Error deleting priority");
   } else {
-    console.log(response.data);
     return response.data;
   }
 };

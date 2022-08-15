@@ -8,7 +8,6 @@ const deleteTodo = async (idUser: number, idTodo: number) => {
   if (response.status != 200) {
     throw new Error("Error deleting todo");
   } else {
-    console.log(response.data);
     return response.data;
   }
 };

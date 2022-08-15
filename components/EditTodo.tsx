@@ -70,19 +70,17 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
   const [priorityArray, setPriorityArray] = useState<PriorityItem[]>([]);
 
   const handleAddPriority = async (priorityItem: PriorityItem) => {
-    console.log("add");
-    console.log(priorityItem);
     await createPriority(
       idUser,
       priorityItem.priority,
       priorityItem.priorityColor
     );
     setPriorityArray([...priorityArray, priorityItem]);
+    queryClient.invalidateQueries("usersPrioritiesIds" + idUser);
     return null;
   };
 
   const handleDeletePriority = (priorityItem: PriorityItem) => {
-    console.log("delete");
     priorityArray.splice(priorityArray.indexOf(priorityItem), 1);
     setPriorityArray([...priorityArray]);
     const response = deletePriority(
@@ -91,7 +89,6 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
       priorityItem.priorityColor
     );
     // TODO: delete priority from the database
-    console.log(response);
   };
 
   const queryClient = useQueryClient();
@@ -103,8 +100,6 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
     },
   });
   const handleOnSubmit = (values) => {
-    console.log("submit");
-    console.log(values);
     mutate(values);
   };
 
@@ -120,7 +115,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
     setFieldValue("priority", priorityArray[0].priority);
     setFieldValue("priorityColor", priorityArray[0].priorityColor);
     queryClient.invalidateQueries("todos " + data.priority);
-    queryClient.invalidateQueries("usersPrioritiesIds");
+    queryClient.invalidateQueries("usersPrioritiesIds" + idUser);
   };
 
   return (

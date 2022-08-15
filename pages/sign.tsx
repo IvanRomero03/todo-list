@@ -48,15 +48,12 @@ const SingInPage = () => {
   };
 
   const handleOnSignUp = async (values) => {
-    console.log(values);
     const getUniqueUsernameResponse = await getUniqueUsername(values.name);
     if (getUniqueUsernameResponse) {
       const idResponse = await createUser({
         name: values.name,
         password: values.password,
       });
-      console.log("User is created");
-      console.log(idResponse);
       localStorage.setItem("user", values.name);
       localStorage.setItem("idUser", idResponse);
       router.push("/");

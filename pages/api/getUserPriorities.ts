@@ -10,7 +10,6 @@ const getUserPriorities = async (idUser: number) => {
   if (response.status != 200) {
     throw new Error("Error getting user priorities");
   } else {
-    console.log(response.data);
     return response.data;
   }
 };

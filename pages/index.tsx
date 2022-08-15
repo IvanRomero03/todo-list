@@ -33,9 +33,6 @@ import { useQuery } from "react-query";
 
 export default function Home() {
   const router = useRouter();
-  const handleOnCreate = () => {
-    console.log("create");
-  };
   const statusArray = Object.values(Status);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -59,7 +56,6 @@ export default function Home() {
   }, []);
 
   const handleCreateTodo = async (todo: Todo) => {
-    console.log(todo, "creating");
     const response = await createTodo(
       Number(idUser),
       todo.title,
@@ -68,12 +64,11 @@ export default function Home() {
       todo.priority,
       todo.priorityColor
     );
-    console.log(response);
     return { priority: todo.priority, status: todo.status };
   };
 
   const { data, isLoading, isError } = useQuery(
-    "usersPrioritiesIds",
+    "usersPrioritiesIds" + idUser,
     async () => await getUsersPrioritiesIds(Number(idUser))
   );
   data?.reverse();
