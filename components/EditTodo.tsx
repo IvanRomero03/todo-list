@@ -46,6 +46,7 @@ import PriorityForm from "./PriorityForm";
 import { Status } from "../types/status";
 import createPriority from "../pages/api/createPriority";
 import getUserPriorities from "../pages/api/getUserPriorities";
+import deletePriority from "../pages/api/deletePriorityByValues";
 type Props = {
   idTodo?: number;
   onClose: () => void;
@@ -84,8 +85,13 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
     console.log("delete");
     priorityArray.splice(priorityArray.indexOf(priorityItem), 1);
     setPriorityArray([...priorityArray]);
+    const response = deletePriority(
+      idUser,
+      priorityItem.priority,
+      priorityItem.priorityColor
+    );
     // TODO: delete priority from the database
-    console.log(priorityItem);
+    console.log(response);
   };
 
   const queryClient = useQueryClient();
@@ -109,6 +115,12 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
     };
     load();
   }, []);
+  const bigHandleDeletePriority = (setFieldValue, item) => {
+    handleDeletePriority(item);
+    setFieldValue("priority", priorityArray[0].priority);
+    setFieldValue("priorityColor", priorityArray[0].priorityColor);
+    queryClient.invalidateQueries("todos " + data.priority);
+  };
 
   return (
     <ModalContent minW="90%" minH="60%">
@@ -191,15 +203,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
                             <Button
                               borderWidth={"1px"}
                               onClick={() => {
-                                handleDeletePriority(item);
-                                setFieldValue(
-                                  "priority",
-                                  priorityArray[0].priority
-                                );
-                                setFieldValue(
-                                  "priorityColor",
-                                  priorityArray[0].priorityColor
-                                );
+                                bigHandleDeletePriority(setFieldValue, item);
                               }}
                               size="xs"
                               // TODO add edit priority
