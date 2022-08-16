@@ -18,9 +18,9 @@
 - [x] topleft content
 - [x] How to use
 - [x] todo box inclutions 
-- [ ] sorting todos
-- [ ] filtering todos
+- [x] sorting todos
+- [x] filtering todos
 
 ### editTodoBox
-- [ ] add save functionalities
-- [ ] delete functionalities
+- [x] add save functionalities
+- [x] delete functionalitie
