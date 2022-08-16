@@ -64,7 +64,7 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
   if (idTodo) {
     todo = data[0];
   } else {
-    todo = {} as Todo;
+    todo = { status: Status.NotStarted } as Todo;
   }
 
   const [priorityArray, setPriorityArray] = useState<PriorityItem[]>([]);
@@ -157,23 +157,20 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
                   mb="1%"
                 />
                 <Code>Status</Code>
-                <Select
+                <Field
+                  as={Select}
                   name="status"
                   variant="filled"
                   size="md"
                   mt="1%"
                   mb="1%"
-                  defaultValue={values.status ?? "Not Started"}
-                  onChange={(e) => {
-                    setFieldValue("status", e.target.value);
-                  }}
                 >
                   {Object.values(Status).map((status) => (
                     <option key={status} value={status}>
                       {status}
                     </option>
                   ))}
-                </Select>
+                </Field>
 
                 <Code>Priority</Code>
                 <Menu>
