@@ -182,19 +182,24 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
                   </MenuButton>
                   <MenuList alignContent={"center"}>
                     {priorityArray.map((item) => (
-                      <MenuItem
-                        onClick={() => {
-                          setFieldValue("priority", item.priority);
-                          setFieldValue("priorityColor", item.priorityColor);
-                        }}
-                        key={item.priority}
-                      >
+                      <MenuItem key={item.priority}>
                         <Container>
                           <HStack>
-                            <PrioritySelectItem
-                              priority={item.priority}
-                              priorityColor={item.priorityColor}
-                            />
+                            <Container
+                              minW={"60%"}
+                              onClick={() => {
+                                setFieldValue("priority", item.priority);
+                                setFieldValue(
+                                  "priorityColor",
+                                  item.priorityColor
+                                );
+                              }}
+                            >
+                              <PrioritySelectItem
+                                priority={item.priority}
+                                priorityColor={item.priorityColor}
+                              />
+                            </Container>
                             <Button
                               borderWidth={"1px"}
                               onClick={() => {
@@ -205,6 +210,9 @@ const EditTodo = ({ idTodo, onClose, onSubmit, onDelete, idUser }: Props) => {
                             >
                               <DeleteIcon />
                             </Button>
+                            {/*<Button borderWidth={"1px"} size="xs">
+                              <EditIcon />
+                            </Button> */}
                           </HStack>
                         </Container>
                       </MenuItem>
